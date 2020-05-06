@@ -11,6 +11,10 @@ const routes: Routes = [
     redirectTo: 'home',
     pathMatch: 'full'
   },
+  {
+    path: 'googlemap',
+    loadChildren: () => import('./googlemap/googlemap.module').then( m => m.GooglemapPageModule)
+  },
 ];
 
 @NgModule({
