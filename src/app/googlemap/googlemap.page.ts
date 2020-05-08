@@ -4,7 +4,8 @@ import { Platform } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { map } from 'rxjs/operators';
-import leaflet from 'leaflet';
+import * as L from 'leaflet';
+import 'leaflet.markercluster';
 
 declare var MarkerClusterer: any;
 @Component({
@@ -23,34 +24,37 @@ export class GooglemapPage {
   ionViewDidEnter() { this.leafletMap(); }
 
   leafletMap() {
-    var map = leaflet.map("map").fitWorld();
-    leaflet.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attributions: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-      maxZoom: 18
+    var map = L.map("map").fitWorld();
+    // leaflet.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    //   attributions: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+    //   maxZoom: 18
+    // }).addTo(map);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-    const customMarkerIcon = leaflet.icon({
+    const customMarkerIcon = L.icon({
       iconUrl: 'assets/icon/pin.png',
       iconSize: [40, 40], 
       popupAnchor: [0, -20]
     });
 
-    map.locate({
-      setView: true,
-      maxZoom: 10
-    }).on('locationfound', (e) => {
-      console.log(e);
-      let markerGroup = leaflet.featureGroup();
-      let marker: any = leaflet.marker([e.latitude, e.longitude],{icon: customMarkerIcon}).on('click', () => {
-        alert('Marker clicked');
-      })
-      console.log(marker);
-      console.log(markerGroup);
-      markerGroup.addLayer(marker);
-      map.addLayer(markerGroup);
-      }).on('locationerror', (err) => {
-        alert(err.message);
-    });
+    // map.locate({
+    //   setView: true,
+    //   maxZoom: 10
+    // }).on('locationfound', (e) => {
+    //   console.log(e);
+    //   let markerGroup = L.featureGroup();
+    //   let marker: any = L.marker([e.lat, e.longitude],{icon: customMarkerIcon}).on('click', () => {
+    //     alert('Marker clicked');
+    //   })
+    //   console.log(marker);
+    //   console.log(markerGroup);
+    //   markerGroup.addLayer(marker);
+    //   map.addLayer(markerGroup);
+    //   }).on('locationerror', (err) => {
+    //     alert(err.message);
+    // });
 
 
     var url = 'http://localhost/googlemap/svr/report.php?action=read&session_id=123456';
@@ -59,11 +63,24 @@ export class GooglemapPage {
        var location = res.details.Location;
        console.log(location);
       
-       var cluster = leaflet.markerClusterGroup();
+       const MarkerIcon = L.icon({
+        iconUrl: 'assets/icon/pin.png',
+        iconSize: [40, 40], 
+        popupAnchor: [0, -20]
+      });
+      
+       var cluster = L.markerClusterGroup();
        console.log(cluster);
-       cluster.addLayer(leaflet.marker([8.4089718,81.189143]),{icon: customMarkerIcon});
-       cluster.addLayer(leaflet.marker([8.4089718,81.189143]),{icon: customMarkerIcon});
-       cluster.addLayer(leaflet.marker([8.4089718,81.189143]),{icon: customMarkerIcon});
+       var lat,lng,i,div;
+       for(i=0;i<location.length;i++) {
+        lat = location[i].lat;
+        lng = location[i].lng;
+        div = location[i].Division;
+        cluster.addLayer(L.marker([lat,lng],{icon: MarkerIcon}));
+       }
+      //  cluster.addLayer(leaflet.marker([8.4089718,81.189143]),{icon: customMarkerIcon});
+      //  cluster.addLayer(leaflet.marker([8.4089718,81.189143]),{icon: customMarkerIcon});
+      //  cluster.addLayer(leaflet.marker([8.4089718,81.189143]),{icon: customMarkerIcon});
       console.log(cluster);
 
       map.addLayer(cluster);
