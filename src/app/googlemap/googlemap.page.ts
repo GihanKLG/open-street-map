@@ -6,6 +6,7 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 import { map } from 'rxjs/operators';
 import leaflet from 'leaflet';
 
+declare var MarkerClusterer: any;
 @Component({
   selector: 'app-googlemap',
   templateUrl: './googlemap.page.html',
@@ -22,11 +23,11 @@ export class GooglemapPage {
   ionViewDidEnter() { this.leafletMap(); }
 
   leafletMap() {
-    this.map = leaflet.map("map").fitWorld();
+    var map = leaflet.map("map").fitWorld();
     leaflet.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attributions: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
       maxZoom: 18
-    }).addTo(this.map);
+    }).addTo(map);
 
     const customMarkerIcon = leaflet.icon({
       iconUrl: 'assets/icon/pin.png',
@@ -34,7 +35,7 @@ export class GooglemapPage {
       popupAnchor: [0, -20]
     });
 
-    this.map.locate({
+    map.locate({
       setView: true,
       maxZoom: 10
     }).on('locationfound', (e) => {
@@ -46,7 +47,7 @@ export class GooglemapPage {
       console.log(marker);
       console.log(markerGroup);
       markerGroup.addLayer(marker);
-      this.map.addLayer(markerGroup);
+      map.addLayer(markerGroup);
       }).on('locationerror', (err) => {
         alert(err.message);
     });
@@ -55,10 +56,17 @@ export class GooglemapPage {
     var url = 'http://localhost/googlemap/svr/report.php?action=read&session_id=123456';
     console.log(url);
     this.http.get(url).subscribe((res: any) => {
-       var locations = res.details.Location;
-       console.log(locations);
+       var location = res.details.Location;
+       console.log(location);
+      
+       var cluster = leaflet.markerClusterGroup();
+       console.log(cluster);
+       cluster.addLayer(leaflet.marker([8.4089718,81.189143]),{icon: customMarkerIcon});
+       cluster.addLayer(leaflet.marker([8.4089718,81.189143]),{icon: customMarkerIcon});
+       cluster.addLayer(leaflet.marker([8.4089718,81.189143]),{icon: customMarkerIcon});
+      console.log(cluster);
 
-      //  var markerClusters = markerClusterGroup();
+      map.addLayer(cluster);
 
     });
     // this.map.locate({

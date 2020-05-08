@@ -15,6 +15,10 @@ const routes: Routes = [
     path: 'googlemap',
     loadChildren: () => import('./googlemap/googlemap.module').then( m => m.GooglemapPageModule)
   },
+  {
+    path: 'culstermap',
+    loadChildren: () => import('./culstermap/culstermap.module').then( m => m.CulstermapPageModule)
+  },
 ];
 
 @NgModule({
