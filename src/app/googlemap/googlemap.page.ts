@@ -34,28 +34,28 @@ export class GooglemapPage {
     }).addTo(map);
 
     const customMarkerIcon = L.icon({
-      iconUrl: 'assets/icon/pin.png',
+      iconUrl: 'assets/icon/pin3.png',
       iconSize: [40, 40], 
       popupAnchor: [0, -20]
     });
 
-    // map.locate({
-    //   setView: true,
-    //   maxZoom: 10
-    // }).on('locationfound', (e) => {
-    //   console.log(e);
-    //   let markerGroup = L.featureGroup();
-    //   let marker: any = L.marker([e.lat, e.longitude],{icon: customMarkerIcon}).on('click', () => {
-    //     alert('Marker clicked');
-    //   })
-    //   console.log(marker);
-    //   console.log(markerGroup);
-    //   markerGroup.addLayer(marker);
-    //   map.addLayer(markerGroup);
-    //   }).on('locationerror', (err) => {
-    //     alert(err.message);
-    // });
-
+    map.locate({
+      setView: true,
+      maxZoom: 10
+    }).on('locationfound', (res) => {
+      // console.log(e.latitude);
+      let marker = L.marker(res.latlng, { title: "My marker" });
+      map.addLayer(marker);
+      // var circle = L.circle(res.latlng, {
+      //     color: "red",
+      //     fillColor: "#f03",
+      //     fillOpacity: 0.5,
+      //     radius: 50.0
+      // }).addTo(map);
+      // let markerGroup = L.featureGroup();
+      // let marker: any = L.marker([e.lat, e.longitude],{icon: customMarkerIcon}).on('click', () => {
+      //   alert('Marker clicked');
+      });
 
     var url = 'http://localhost/googlemap/svr/report.php?action=read&session_id=123456';
     console.log(url);
@@ -64,7 +64,7 @@ export class GooglemapPage {
        console.log(location);
       
        const MarkerIcon = L.icon({
-        iconUrl: 'assets/icon/pin.png',
+        iconUrl: 'assets/icon/pin3.png',
         iconSize: [40, 40], 
         popupAnchor: [0, -20]
       });
@@ -76,82 +76,57 @@ export class GooglemapPage {
         lat = location[i].lat;
         lng = location[i].lng;
         div = location[i].Division;
-        cluster.addLayer(L.marker([lat,lng],{icon: MarkerIcon}));
+        cluster.addLayer(L.marker([lat,lng], { title: "My marker" }).bindPopup('<p>You are here ' + div + '</p>'));
        }
-      //  cluster.addLayer(leaflet.marker([8.4089718,81.189143]),{icon: customMarkerIcon});
-      //  cluster.addLayer(leaflet.marker([8.4089718,81.189143]),{icon: customMarkerIcon});
-      //  cluster.addLayer(leaflet.marker([8.4089718,81.189143]),{icon: customMarkerIcon});
       console.log(cluster);
 
       map.addLayer(cluster);
 
     });
-    // this.map.locate({
-    //   setView: true,
-    //   maxZoom: 10
-    // }).on('locationfound', (e) => {
-    //   let markerGroup = leaflet.featureGroup();
-    //   let marker: any = leaflet.marker([e.latitude, e.longitude]).on('click', () => {
-    //     alert('Marker clicked');
-    //   })
-    //   markerGroup.addLayer(marker);
-    //   this.map.addLayer(markerGroup);
-    //   }).on('locationerror', (err) => {
-    //     alert(err.message);
-    // });
 
+   url = 'http://localhost/googlemap/svr/report.php?action=division_read&session_id=123456';
+   console.log(url);
 
-    // In setView add latLng and zoom
-    // this.map = new Map('mapId').setView([7.0008331,80.7645785], 8);
+   this.http.get(url).subscribe((res: any) => {
+     var location = res.details.Location;  
+    //  console.log(location);
+     var circles = [], i;
+     var result = res.details.Location;
 
-    // tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
-    //   attribution: 'edupala.com'
-    // }).addTo(this.map);
+    for (i = 0; i < result.length; i++) {
+      const lt = result[i].lat;
+      const lat = lt.split(",");
 
-    // const customMarkerIcon = icon({
-    //   iconUrl: 'assets/icon/pin.png',
-    //   iconSize: [10, 10], 
-    //   popupAnchor: [0, -20]
-    // });
+      const ln = result[i].lng;
+      const lng = ln.split(",");
 
+      var count = result[i].count;
+      var rad = result[i].min_distance;
+      var state = result[i].Division
+      var j
 
-    // var url = 'http://localhost/googlemap/svr/report.php?action=read&session_id=123456';
-    // console.log(url);
-    // this.http.get(url).subscribe((res: any) => {
-    //   var locations = res.details.Location;
-    //   // console.log(locations);
-    //   this.map.locate({
-    //     setView: true,
-    //     maxZoom: 10
-    //   }).on('locationfound', (e) => {
-    //     let markerGroup = leaflet.featureGroup();
-    //     let marker: any = leaflet.marker([e.latitude, e.longitude]).on('click', () => {
-    //       alert('Marker clicked');
-    //     })
-    //     markerGroup.addLayer(marker);
-    //     this.map.addLayer(markerGroup);
-    //     }).on('locationerror', (err) => {
-    //       alert(err.message);
-    //   });
+      for (j = 0; j < lat.length; j++) {
+        var latitude = Number(lat[j]);
+        var longitude = Number(lng[j]);
+        var r = Number(rad[j]);
+        // console.log(rad[j]);
 
-      // locations.forEach((location) => {
-      //   console.log(location);
-      //   marker([location.lat, location.lng], {icon: customMarkerIcon})
-      //   .bindPopup(`<b>${location.Division}</b>`, { autoClose: false })
-      //   .addTo(this.map).openPopup();
-      // });
-    // });  
+        var stroke = 'black';
+        if (r == 10) stroke = 'red';
+        else if (r > 5)  stroke = 'yellow';
+        else if (r > 2) stroke = 'green';
+        else stroke = 'brown';
 
-    
-    // const markPoint = new marker([12.972442, 77.594563], {icon: customMarkerIcon});
-    // markPoint.bindPopup('<p>Tashi Delek - Bangalore.</p>');
-    // this.map.addLayer(markPoint);
-  }
-
-  ionViewWillLeave() {
-    this.map.remove();
-  }
-
-
+        var circle = L.circle([latitude, longitude], {
+          color: stroke,
+          fillColor: "white",
+          fillOpacity: 0.5,
+          radius: r
+          }).addTo(map);               
+        circles.push(circle);
+      }
+    } 
+   });
+ }
 
 }
