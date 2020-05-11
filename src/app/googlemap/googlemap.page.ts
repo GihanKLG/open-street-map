@@ -6,6 +6,7 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 import { map } from 'rxjs/operators';
 import * as L from 'leaflet';
 import 'leaflet.markercluster';
+import { AuthenticationService } from './../services/authentication.service';
 
 declare var MarkerClusterer: any;
 @Component({
@@ -19,7 +20,7 @@ export class GooglemapPage {
 
   constructor(public http: HttpClient,
     public plt: Platform,
-    public router: Router) {}
+    public router: Router, private authService: AuthenticationService) {}
 
   ionViewDidEnter() { this.leafletMap(); }
 
@@ -128,5 +129,18 @@ export class GooglemapPage {
     } 
    });
  }
+
+ logout() {
+  console.log("logout");
+  this.authService.logout();
+  this.authService.authenticationState.subscribe(state => {
+    console.log(state);
+    if (state) {
+      this.router.navigate(['googlemap']);
+    } else {
+      this.router.navigate(['login']);
+    }
+  });
+}
 
 }
