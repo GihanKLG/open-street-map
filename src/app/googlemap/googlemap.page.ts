@@ -3,8 +3,8 @@ import { Component, ViewChild, ElementRef } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { map } from 'rxjs/operators';
 import * as L from 'leaflet';
+import 'leaflet-routing-machine';
 import 'leaflet.markercluster';
 import { AuthenticationService } from './../services/authentication.service';
 
@@ -47,16 +47,14 @@ export class GooglemapPage {
       // console.log(e.latitude);
       let marker = L.marker(res.latlng, { title: "My marker" });
       map.addLayer(marker);
-      // var circle = L.circle(res.latlng, {
-      //     color: "red",
-      //     fillColor: "#f03",
-      //     fillOpacity: 0.5,
-      //     radius: 50.0
-      // }).addTo(map);
-      // let markerGroup = L.featureGroup();
-      // let marker: any = L.marker([e.lat, e.longitude],{icon: customMarkerIcon}).on('click', () => {
-      //   alert('Marker clicked');
-      });
+
+      L.Routing.control({ 
+        waypoints: [ 
+            L.latLng(res.latlng), 
+            L.latLng(6.242283, 80.531881) 
+        ], routeWhileDragging: false 
+     }).addTo(map);
+    });
 
     var url = 'http://localhost/googlemap/svr/report.php?action=read&session_id=123456';
     console.log(url);
@@ -84,6 +82,15 @@ export class GooglemapPage {
       map.addLayer(cluster);
 
     });
+
+    // var Routing = require('leaflet-routing-machine');  
+  //   L.Routing.control({ 
+  //     waypoints: [ 
+  //         L.latLng(57.74, 11.94), 
+  //         L.latLng(57.6792, 11.949) 
+  //     ], routeWhileDragging: false 
+  // }).addTo(map);
+      
 
    url = 'http://localhost/googlemap/svr/report.php?action=division_read&session_id=123456';
    console.log(url);
