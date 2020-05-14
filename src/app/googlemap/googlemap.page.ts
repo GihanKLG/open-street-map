@@ -34,12 +34,6 @@ export class GooglemapPage {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-    const customMarkerIcon = L.icon({
-      iconUrl: 'assets/icon/pin3.png',
-      iconSize: [40, 40], 
-      popupAnchor: [0, -20]
-    });
-
     map.locate({
       setView: true,
       maxZoom: 10
@@ -54,19 +48,14 @@ export class GooglemapPage {
             L.latLng(6.242283, 80.531881) 
         ], routeWhileDragging: false 
      }).addTo(map);
-    });
+    // });
+    var current = res.latlng;
 
-    var url = 'http://localhost/googlemap/svr/report.php?action=read&session_id=123456';
+    var url = 'http://localhost/googlemap/svr/report.php?action=read&location='+current+'&session_id=123456';
     console.log(url);
     this.http.get(url).subscribe((res: any) => {
        var location = res.details.Location;
        console.log(location);
-      
-       const MarkerIcon = L.icon({
-        iconUrl: 'assets/icon/pin3.png',
-        iconSize: [40, 40], 
-        popupAnchor: [0, -20]
-      });
       
        var cluster = L.markerClusterGroup();
        console.log(cluster);
@@ -82,15 +71,6 @@ export class GooglemapPage {
       map.addLayer(cluster);
 
     });
-
-    // var Routing = require('leaflet-routing-machine');  
-  //   L.Routing.control({ 
-  //     waypoints: [ 
-  //         L.latLng(57.74, 11.94), 
-  //         L.latLng(57.6792, 11.949) 
-  //     ], routeWhileDragging: false 
-  // }).addTo(map);
-      
 
    url = 'http://localhost/googlemap/svr/report.php?action=division_read&session_id=123456';
    console.log(url);
@@ -132,9 +112,11 @@ export class GooglemapPage {
           radius: r
           }).addTo(map);               
         circles.push(circle);
-      }
-    } 
-   });
+       }
+     } 
+     console.log(circle);
+    });
+  }); 
  }
 
  logout() {
