@@ -42,12 +42,12 @@ export class GooglemapPage {
       let marker = L.marker(res.latlng, { title: "My marker" });
       map.addLayer(marker);
 
-      L.Routing.control({ 
-        waypoints: [ 
-            L.latLng(res.latlng), 
-            L.latLng(6.242283, 80.531881) 
-        ], routeWhileDragging: false 
-     }).addTo(map);
+    //   L.Routing.control({ 
+    //     waypoints: [ 
+    //         L.latLng(res.latlng), 
+    //         L.latLng(6.242283, 80.531881) 
+    //     ], routeWhileDragging: false 
+    //  }).addTo(map);
     // });
     var current = res.latlng;
 
@@ -55,6 +55,8 @@ export class GooglemapPage {
     console.log(url);
     this.http.get(url).subscribe((res: any) => {
        var location = res.details.Location;
+       var near_lat = res.details.nearest_place.lat
+       var near_lng = res.details.nearest_place.lng
        console.log(location);
       
        var cluster = L.markerClusterGroup();
@@ -69,6 +71,13 @@ export class GooglemapPage {
       console.log(cluster);
 
       map.addLayer(cluster);
+
+      L.Routing.control({ 
+        waypoints: [ 
+            L.latLng(current), 
+            L.latLng(near_lat, near_lng) 
+        ], routeWhileDragging: false 
+     }).addTo(map);
 
     });
 
