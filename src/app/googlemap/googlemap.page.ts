@@ -1,5 +1,4 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-// import { Map, latLng, tileLayer, Layer, marker, icon } from 'leaflet';
 import { Platform } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
@@ -26,10 +25,6 @@ export class GooglemapPage {
 
   leafletMap() {
     var map = L.map("map").fitWorld();
-    // leaflet.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    //   attributions: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-    //   maxZoom: 18
-    // }).addTo(map);
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
@@ -38,18 +33,9 @@ export class GooglemapPage {
       setView: true,
       maxZoom: 10
     }).on('locationfound', (res) => {
-      // console.log(e.latitude);
       let marker = L.marker(res.latlng, { title: "My marker" });
       map.addLayer(marker);
-
-    //   L.Routing.control({ 
-    //     waypoints: [ 
-    //         L.latLng(res.latlng), 
-    //         L.latLng(6.242283, 80.531881) 
-    //     ], routeWhileDragging: false 
-    //  }).addTo(map);
-    // });
-    var current = res.latlng;
+      var current = res.latlng;
 
     var url = 'http://localhost/googlemap/svr/report.php?action=read&location='+current+'&session_id=123456';
     console.log(url);
@@ -72,12 +58,19 @@ export class GooglemapPage {
 
       map.addLayer(cluster);
 
-      L.Routing.control({ 
+      var routeControl = L.Routing.control({ 
         waypoints: [ 
             L.latLng(current), 
             L.latLng(near_lat, near_lng) 
         ], routeWhileDragging: false 
      }).addTo(map);
+
+      routeControl.on('routesfound', function(e) {
+      var routes = e.routes;
+      var summary = routes[0].summary;
+      // alert distance and time in km and minutes
+      alert('Total distance is ' + summary.totalDistance / 1000 + ' km and total time is ' + Math.round(summary.totalTime % 3600 / 60) + ' minutes');
+     });
 
     });
 
@@ -86,7 +79,6 @@ export class GooglemapPage {
 
    this.http.get(url).subscribe((res: any) => {
      var location = res.details.Location;  
-    //  console.log(location);
      var circles = [], i;
      var result = res.details.Location;
 
@@ -106,8 +98,7 @@ export class GooglemapPage {
         var latitude = Number(lat[j]);
         var longitude = Number(lng[j]);
         var r = Number(rad[j]);
-        // console.log(rad[j]);
-
+      
         var stroke = 'black';
         if (r == 10) stroke = 'red';
         else if (r > 5)  stroke = 'yellow';
