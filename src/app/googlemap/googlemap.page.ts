@@ -16,6 +16,8 @@ declare var MarkerClusterer: any;
 export class GooglemapPage {
   @ViewChild('map', { static: false }) mapElement: ElementRef;
   map: any;
+  // dist: any;
+  // loc_radius: any;
 
   constructor(public http: HttpClient,
     public plt: Platform,
@@ -43,6 +45,7 @@ export class GooglemapPage {
        var location = res.details.Location;
        var near_lat = res.details.nearest_place.lat
        var near_lng = res.details.nearest_place.lng
+       var loc_radius = res.details.nearest_place.radius
        console.log(location);
       
        var cluster = L.markerClusterGroup();
@@ -65,14 +68,20 @@ export class GooglemapPage {
         ], routeWhileDragging: false 
      }).addTo(map);
 
+     var dist;
       routeControl.on('routesfound', function(e) {
       var routes = e.routes;
       var summary = routes[0].summary;
+
+      dist = Math.round(summary.totalDistance / 1000);
+      console.log(dist)
+      if(dist > loc_radius) alert('Total distance is ' + Math.round(summary.totalDistance / 1000) + ' km and total time is ' + Math.round(summary.totalTime % 3600 / 60) + ' minutes');
+      else alert('You are in sand minning place');
       // alert distance and time in km and minutes
-      alert('Total distance is ' + summary.totalDistance / 1000 + ' km and total time is ' + Math.round(summary.totalTime % 3600 / 60) + ' minutes');
+      //alert('Total distance is ' + Math.round(summary.totalDistance / 1000) + ' km and total time is ' + Math.round(summary.totalTime % 3600 / 60) + ' minutes');
      });
 
-    });
+    // });
 
    url = 'http://localhost/googlemap/svr/report.php?action=division_read&session_id=123456';
    console.log(url);
@@ -116,7 +125,11 @@ export class GooglemapPage {
      } 
      console.log(circle);
     });
-  }); 
+    console.log(loc_radius);
+    console.log(dist);
+   }); 
+  //  var loc_distance = this.dist;
+  });
  }
 
  logout() {
