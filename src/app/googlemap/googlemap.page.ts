@@ -1,7 +1,7 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { Router } from '@angular/router';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import * as L from 'leaflet';
 import 'leaflet-routing-machine';
 import 'leaflet.markercluster';
@@ -16,8 +16,6 @@ declare var MarkerClusterer: any;
 export class GooglemapPage {
   @ViewChild('map', { static: false }) mapElement: ElementRef;
   map: any;
-  // dist: any;
-  // loc_radius: any;
 
   constructor(public http: HttpClient,
     public plt: Platform,
@@ -40,16 +38,16 @@ export class GooglemapPage {
       var current = res.latlng;
 
     var url = 'http://localhost/googlemap/svr/report.php?action=read&location='+current+'&session_id=123456';
-    console.log(url);
+    //console.log(url);
     this.http.get(url).subscribe((res: any) => {
        var location = res.details.Location;
        var near_lat = res.details.nearest_place.lat
        var near_lng = res.details.nearest_place.lng
        var loc_radius = res.details.nearest_place.radius
-       console.log(location);
+      // console.log(location);
       
        var cluster = L.markerClusterGroup();
-       console.log(cluster);
+      // console.log(cluster);
        var lat,lng,i,div;
        for(i=0;i<location.length;i++) {
         lat = location[i].lat;
@@ -57,86 +55,80 @@ export class GooglemapPage {
         div = location[i].Division;
         cluster.addLayer(L.marker([lat,lng], { title: "My marker" }).bindPopup('<p>You are here ' + div + '</p>'));
        }
-      console.log(cluster);
+      //console.log(cluster);
 
       map.addLayer(cluster);
 
-      var routeControl = L.Routing.control({ 
-        waypoints: [ 
-            L.latLng(current), 
-            L.latLng(near_lat, near_lng) 
-        ], routeWhileDragging: false 
+      url = 'http://localhost/googlemap/svr/report.php?action=division_read&session_id=123456';
+      // console.log(url);
+
+      this.http.get(url).subscribe((res: any) => {
+        var location = res.details.Location;  
+        var circles = [], i;
+        var result = res.details.Location;
+
+        for (i = 0; i < result.length; i++) {
+          const lt = result[i].lat;
+          const lat = lt.split(",");
+
+          const ln = result[i].lng;
+          const lng = ln.split(",");
+
+          var count = result[i].count;
+          var rad = result[i].min_distance;
+          var state = result[i].Division
+          var j
+
+          for (j = 0; j < lat.length; j++) {
+            var latitude = Number(lat[j]);
+            var longitude = Number(lng[j]);
+            var r = Number(rad[j]);
+          
+            var stroke = 'black';
+            if (r == 10) stroke = 'red';
+            else if (r > 5)  stroke = 'yellow';
+            else if (r > 2) stroke = 'green';
+            else stroke = 'brown';
+
+            var circle = L.circle([latitude, longitude], {
+              color: stroke,
+              fillColor: "white",
+              fillOpacity: 0.5,
+              radius: r
+              }).addTo(map);               
+            circles.push(circle);
+          }
+        } 
+        console.log(circle);
+      });
+
+    var routeControl = L.Routing.control({ 
+      waypoints: [ 
+          L.latLng(current), 
+          L.latLng(near_lat, near_lng) 
+      ], routeWhileDragging: false 
      }).addTo(map);
 
-     var dist;
-      routeControl.on('routesfound', function(e) {
-      var routes = e.routes;
-      var summary = routes[0].summary;
+    routeControl.on('routesfound', function(e) {
+    var routes = e.routes;
+    var summary = routes[0].summary;
 
-      dist = Math.round(summary.totalDistance / 1000);
-      console.log(dist)
-      if(dist > loc_radius) alert('Total distance is ' + Math.round(summary.totalDistance / 1000) + ' km and total time is ' + Math.round(summary.totalTime % 3600 / 60) + ' minutes');
-      else alert('You are in sand minning place');
-      // alert distance and time in km and minutes
-      //alert('Total distance is ' + Math.round(summary.totalDistance / 1000) + ' km and total time is ' + Math.round(summary.totalTime % 3600 / 60) + ' minutes');
-     });
+    var dist = Math.round(summary.totalDistance / 1000);
+    //console.log(dist)
+    if(dist > loc_radius) alert('You are not in sand mining place and total distance is ' + Math.round(summary.totalDistance / 1000) + ' km and total time is ' + Math.round(summary.totalTime % 3600 / 60) + ' minutes');
+    else alert('You are in sand minning place');
+   });
 
-    // });
-
-   url = 'http://localhost/googlemap/svr/report.php?action=division_read&session_id=123456';
-   console.log(url);
-
-   this.http.get(url).subscribe((res: any) => {
-     var location = res.details.Location;  
-     var circles = [], i;
-     var result = res.details.Location;
-
-    for (i = 0; i < result.length; i++) {
-      const lt = result[i].lat;
-      const lat = lt.split(",");
-
-      const ln = result[i].lng;
-      const lng = ln.split(",");
-
-      var count = result[i].count;
-      var rad = result[i].min_distance;
-      var state = result[i].Division
-      var j
-
-      for (j = 0; j < lat.length; j++) {
-        var latitude = Number(lat[j]);
-        var longitude = Number(lng[j]);
-        var r = Number(rad[j]);
-      
-        var stroke = 'black';
-        if (r == 10) stroke = 'red';
-        else if (r > 5)  stroke = 'yellow';
-        else if (r > 2) stroke = 'green';
-        else stroke = 'brown';
-
-        var circle = L.circle([latitude, longitude], {
-          color: stroke,
-          fillColor: "white",
-          fillOpacity: 0.5,
-          radius: r
-          }).addTo(map);               
-        circles.push(circle);
-       }
-     } 
-     console.log(circle);
-    });
-    console.log(loc_radius);
-    console.log(dist);
    }); 
   //  var loc_distance = this.dist;
   });
  }
 
  logout() {
-  console.log("logout");
+  //console.log("logout");
   this.authService.logout();
   this.authService.authenticationState.subscribe(state => {
-    console.log(state);
+    //console.log(state);
     if (state) {
       this.router.navigate(['googlemap']);
     } else {
