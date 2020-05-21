@@ -24,10 +24,23 @@ export class GooglemapPage {
   ionViewDidEnter() { this.leafletMap(); }
 
   leafletMap() {
+    var d = new Date();
+    var h =  d.getHours();
+    var m = d.getMinutes();
+    var n = d.getMilliseconds();
+    console.log('start time load leflet map -'+h+':'+m+':'+n);
+
     var map = L.map("map").fitWorld();
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
+    
+    //get time
+    d = new Date();
+    h =  d.getHours();
+    m = d.getMinutes();
+    n = d.getMilliseconds();
+    console.log('end time load leaflet map -'+h+':'+m+':'+n);
 
     map.locate({
       setView: true,
@@ -36,71 +49,116 @@ export class GooglemapPage {
       let marker = L.marker(res.latlng, { title: "My marker" });
       map.addLayer(marker);
       var current = res.latlng;
+    
+    //get time
+    d = new Date();
+    h =  d.getHours();
+    m = d.getMinutes();
+    n = d.getMilliseconds();
+    console.log('time for get current location -'+h+':'+m+':'+n);
 
     var url = 'http://localhost/googlemap/svr/report.php?action=read&location='+current+'&session_id=123456';
-    //console.log(url);
+
     this.http.get(url).subscribe((res: any) => {
+     
+      //get time
+      d = new Date();
+      h =  d.getHours();
+      m = d.getMinutes();
+      n = d.getMilliseconds();
+      console.log('time to get backend respond (action:read)-'+h+':'+m+':'+n);
+
        var location = res.details.Location;
        var near_lat = res.details.nearest_place.lat
        var near_lng = res.details.nearest_place.lng
        var loc_radius = res.details.nearest_place.radius
-      // console.log(location);
-      
        var cluster = L.markerClusterGroup();
-      // console.log(cluster);
        var lat,lng,i,div;
+
+      //get time
+      d = new Date();
+      h =  d.getHours();
+      m = d.getMinutes();
+      n = d.getMilliseconds();
+      console.log('time for start to run for loop -'+h+':'+m+':'+n);
+
        for(i=0;i<location.length;i++) {
         lat = location[i].lat;
         lng = location[i].lng;
         div = location[i].Division;
         cluster.addLayer(L.marker([lat,lng], { title: "My marker" }).bindPopup('<p>You are here ' + div + '</p>'));
        }
-      //console.log(cluster);
 
       map.addLayer(cluster);
 
-      url = 'http://localhost/googlemap/svr/report.php?action=division_read&session_id=123456';
-      // console.log(url);
+      //get time
+      d = new Date();
+      h =  d.getHours();
+      m = d.getMinutes();
+      n = d.getMilliseconds();
+      console.log('time for end to run for loop -'+h+':'+m+':'+n);
 
-      this.http.get(url).subscribe((res: any) => {
-        var location = res.details.Location;  
-        var circles = [], i;
-        var result = res.details.Location;
+    url = 'http://localhost/googlemap/svr/report.php?action=division_read&session_id=123456';
+    
+    this.http.get(url).subscribe((res: any) => {
 
-        for (i = 0; i < result.length; i++) {
-          const lt = result[i].lat;
-          const lat = lt.split(",");
+      //get time
+      d = new Date();
+      h =  d.getHours();
+      m = d.getMinutes();
+      n = d.getMilliseconds();
+      console.log('time to get backend respond (action:division_read)-'+h+':'+m+':'+n);
 
-          const ln = result[i].lng;
-          const lng = ln.split(",");
+      var location = res.details.Location;  
+      var circles = [], i;
+      var result = res.details.Location;
 
-          var count = result[i].count;
-          var rad = result[i].min_distance;
-          var state = result[i].Division
-          var j
+      //get time
+      d = new Date();
+      h =  d.getHours();
+      m = d.getMinutes();
+      n = d.getMilliseconds();
+      console.log('time for start to run for loop -'+h+':'+m+':'+n);
 
-          for (j = 0; j < lat.length; j++) {
-            var latitude = Number(lat[j]);
-            var longitude = Number(lng[j]);
-            var r = Number(rad[j]);
-          
-            var stroke = 'black';
-            if (r == 10) stroke = 'red';
-            else if (r > 5)  stroke = 'yellow';
-            else if (r > 2) stroke = 'green';
-            else stroke = 'brown';
+      for (i = 0; i < result.length; i++) {
+        const lt = result[i].lat;
+        const lat = lt.split(",");
 
-            var circle = L.circle([latitude, longitude], {
-              color: stroke,
-              fillColor: "white",
-              fillOpacity: 0.5,
-              radius: r
-              }).addTo(map);               
-            circles.push(circle);
-          }
-        } 
-        console.log(circle);
-      });
+        const ln = result[i].lng;
+        const lng = ln.split(",");
+
+        var count = result[i].count;
+        var rad = result[i].min_distance;
+        var state = result[i].Division
+        var j
+
+        for (j = 0; j < lat.length; j++) {
+          var latitude = Number(lat[j]);
+          var longitude = Number(lng[j]);
+          var r = Number(rad[j]);
+        
+          var stroke = 'black';
+          if (r == 10) stroke = 'red';
+          else if (r > 5)  stroke = 'yellow';
+          else if (r > 2) stroke = 'green';
+          else stroke = 'brown';
+
+          var circle = L.circle([latitude, longitude], {
+            color: stroke,
+            fillColor: "white",
+            fillOpacity: 0.5,
+            radius: r
+            }).addTo(map);               
+          circles.push(circle);
+        }
+      } 
+      //get time
+      d = new Date();
+      h =  d.getHours();
+      m = d.getMinutes();
+      n = d.getMilliseconds();
+      console.log('time for end to run for loop -'+h+':'+m+':'+n);
+    });
 
     var routeControl = L.Routing.control({ 
       waypoints: [ 
@@ -114,21 +172,17 @@ export class GooglemapPage {
     var summary = routes[0].summary;
 
     var dist = Math.round(summary.totalDistance / 1000);
-    //console.log(dist)
     if(dist > loc_radius) alert('You are not in sand mining place and total distance is ' + Math.round(summary.totalDistance / 1000) + ' km and total time is ' + Math.round(summary.totalTime % 3600 / 60) + ' minutes');
     else alert('You are in sand minning place');
    });
 
    }); 
-  //  var loc_distance = this.dist;
   });
  }
 
  logout() {
-  //console.log("logout");
   this.authService.logout();
   this.authService.authenticationState.subscribe(state => {
-    //console.log(state);
     if (state) {
       this.router.navigate(['googlemap']);
     } else {
