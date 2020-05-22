@@ -27,8 +27,9 @@ export class GooglemapPage {
     var d = new Date();
     var h =  d.getHours();
     var m = d.getMinutes();
+    var s = d.getSeconds();
     var n = d.getMilliseconds();
-    console.log('start time load leflet map -'+h+':'+m+':'+n);
+    console.log('start time load leflet map -'+h+':'+m+':'+s+':'+n);
 
     var map = L.map("map").fitWorld();
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -39,8 +40,9 @@ export class GooglemapPage {
     d = new Date();
     h =  d.getHours();
     m = d.getMinutes();
+    s = d.getSeconds();
     n = d.getMilliseconds();
-    console.log('end time load leaflet map -'+h+':'+m+':'+n);
+    console.log('end time load leaflet map -'+h+':'+m+':'+s+':'+n);
 
     map.locate({
       setView: true,
@@ -54,8 +56,9 @@ export class GooglemapPage {
     d = new Date();
     h =  d.getHours();
     m = d.getMinutes();
+    s = d.getSeconds();
     n = d.getMilliseconds();
-    console.log('time for get current location -'+h+':'+m+':'+n);
+    console.log('time for get current location -'+h+':'+m+':'+s+':'+n);
 
     var url = 'http://localhost/googlemap/svr/report.php?action=read&location='+current+'&session_id=123456';
 
@@ -65,8 +68,9 @@ export class GooglemapPage {
       d = new Date();
       h =  d.getHours();
       m = d.getMinutes();
+      s = d.getSeconds();
       n = d.getMilliseconds();
-      console.log('time to get backend respond (action:read)-'+h+':'+m+':'+n);
+      console.log('time to get backend respond (action:read)-'+h+':'+m+':'+s+':'+n);
 
        var location = res.details.Location;
        var near_lat = res.details.nearest_place.lat
@@ -79,8 +83,9 @@ export class GooglemapPage {
       d = new Date();
       h =  d.getHours();
       m = d.getMinutes();
+      s = d.getSeconds();
       n = d.getMilliseconds();
-      console.log('time for start to run for loop -'+h+':'+m+':'+n);
+      console.log('time for start to run for loop -'+h+':'+m+':'+s+':'+n);
 
        for(i=0;i<location.length;i++) {
         lat = location[i].lat;
@@ -95,8 +100,9 @@ export class GooglemapPage {
       d = new Date();
       h =  d.getHours();
       m = d.getMinutes();
+      s = d.getSeconds();
       n = d.getMilliseconds();
-      console.log('time for end to run for loop -'+h+':'+m+':'+n);
+      console.log('time for end to run for loop -'+h+':'+m+':'+s+':'+n);
 
     url = 'http://localhost/googlemap/svr/report.php?action=division_read&session_id=123456';
     
@@ -106,8 +112,9 @@ export class GooglemapPage {
       d = new Date();
       h =  d.getHours();
       m = d.getMinutes();
+      s = d.getSeconds();
       n = d.getMilliseconds();
-      console.log('time to get backend respond (action:division_read)-'+h+':'+m+':'+n);
+      console.log('time to get backend respond (action:division_read)-'+h+':'+m+':'+s+':'+n);
 
       var location = res.details.Location;  
       var circles = [], i;
@@ -117,8 +124,9 @@ export class GooglemapPage {
       d = new Date();
       h =  d.getHours();
       m = d.getMinutes();
+      s = d.getSeconds();
       n = d.getMilliseconds();
-      console.log('time for start to run for loop -'+h+':'+m+':'+n);
+      console.log('time for start to run for loop -'+h+':'+m+':'+s+':'+n);
 
       for (i = 0; i < result.length; i++) {
         const lt = result[i].lat;
@@ -156,8 +164,9 @@ export class GooglemapPage {
       d = new Date();
       h =  d.getHours();
       m = d.getMinutes();
+      s = d.getSeconds();
       n = d.getMilliseconds();
-      console.log('time for end to run for loop -'+h+':'+m+':'+n);
+      console.log('time for end to run for loop -'+h+':'+m+':'+s+':'+n);
     });
 
     var routeControl = L.Routing.control({ 
