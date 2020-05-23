@@ -175,10 +175,13 @@ export class GooglemapPage {
       waypoints: [ 
           L.latLng(current), 
           L.latLng(near_lat, near_lng) 
-      ], routeWhileDragging: false 
+      ], lineOptions: {
+        styles: [{className: 'animate'}] // Adding animate class
+      }, routeWhileDragging: false, show: false 
      }).addTo(map);
 
-    routeControl.on('routesfound', function(e) {
+
+     routeControl.on('routesfound', function(e) {
     var routes = e.routes;
     var summary = routes[0].summary;
 
