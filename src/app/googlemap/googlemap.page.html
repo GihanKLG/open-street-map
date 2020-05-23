@@ -1,12 +1,21 @@
 <head>
   <script src="https://cdn-webgl.wrld3d.com/wrldjs/dist/latest/wrld.js"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.1/leaflet.css" rel="stylesheet" />
-  <!-- <link href="../node_modules/leaflet/dist/leaflet.css" rel="stylesheet" />
-  <link href="../node_modules/leaflet-routing-machine/dist/leaflet-routing-machine.css" rel="stylesheet" /> -->
+
+  @Scripts.Render("~/bundles/jquery")
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css"
+        integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+        crossorigin="" />
+
+ <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"
+          integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA=="
+          crossorigin=""></script>
+
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
   <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+
 </head> 
 <body> 
 <ion-header>
@@ -16,7 +25,7 @@
       </ion-button>
   </ion-toolbar>
 </ion-header>
-
+<div id="distancetravelled"></div>
 <ion-content>
   <div id="map" style="width: 100%; height: 100%"></div>
 </ion-content>
