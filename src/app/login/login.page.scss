@@ -1,10 +1,51 @@
-ion-item{
-    background: #3880ff;
-    color: #fff;
+// ion-item{
+//     background: #3880ff;
+//     color: #fff;
+// }
+// ion-button{
+//    background: #062f77;
+// }
+// a{
+//     color: #fff;
+// }
+ion-content {
+    --background: #ebe5cf;
+  }
+  .col-container {
+      padding-top: 9%;
+      position: relative;
+  }
+.gsmb-top-logo {
+    margin: auto;
+    height: 35%;
+    width: 35%;
+    max-height: 140px;
+    max-width: 140px;
 }
-ion-button{
-   background: #062f77;
+.nav-bottons {
+    display: inline-block;
+    vertical-align: middle;
+    margin-bottom: 3%;
+    margin-left: 5%;
+    margin-right: 5%;
+    font-size: x-large;
+    height: 50%;
+    max-height: 60px;
+    width: 90%;
+    text-transform: none;
+    --background: #a65a19;
+    color: #ffffff;
 }
-a{
-    color: #fff;
-}
+
+.input {
+    margin-top: 2%;
+    margin-bottom: 2%;
+    margin-left: 5%;
+    margin-right: 5%;
+    height: 45%;
+    max-height: 60px;
+    width: 90%;
+    font-size: 20px;
+    text-align: center;
+    background: black;
+  }

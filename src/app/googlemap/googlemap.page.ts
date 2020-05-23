@@ -60,7 +60,8 @@ export class GooglemapPage {
     n = d.getMilliseconds();
     console.log('time for get current location -'+h+':'+m+':'+s+':'+n);
 
-    var url = 'http://localhost/googlemap/svr/report.php?action=read&location='+current+'&session_id=123456';
+    this.authService.getAccessId().then(id => {
+    var url = 'http://localhost/googlemap/svr/report.php?action=read&location='+current+'&session_id='+id;
 
     this.http.get(url).subscribe((res: any) => {
      
@@ -104,7 +105,8 @@ export class GooglemapPage {
       n = d.getMilliseconds();
       console.log('time for end to run for loop -'+h+':'+m+':'+s+':'+n);
 
-    url = 'http://localhost/googlemap/svr/report.php?action=division_read&session_id=123456';
+    url = 'http://localhost/googlemap/svr/report.php?action=division_read&session_id='+id;
+    console.log(url);
     
     this.http.get(url).subscribe((res: any) => {
 
@@ -187,7 +189,8 @@ export class GooglemapPage {
 
    }); 
   });
- }
+ });
+}
 
  logout() {
   this.authService.logout();
