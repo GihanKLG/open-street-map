@@ -37,7 +37,7 @@ export class DashboardPage implements OnInit {
   }
 
   licesnseSelect() {
-    // console.log(this.appComponent.selectedLicense);
+    console.log(this.appComponent.licenseInfo);
     for (const iterator of this.appComponent.licenseInfo) {
       if (iterator.license_no === this.selectedLicenseNo) {
         this.appComponent.selectedLicense = iterator;
@@ -54,7 +54,8 @@ export class DashboardPage implements OnInit {
       var url = 'http://localhost/gsmb/svr/dashboard.php?action=read'+'&session_id='+ sessionId;
       console.log(url);
       this.http.get(url).subscribe((res: any) => {
-        this.appComponent.licenseInfo = res;
+        console.log(res);
+        this.appComponent.licenseInfo = res.details;
         this.storage.get('selectedID').then((resno: any) => {
           if (resno !== undefined) {
             this.selectedLicenseNo = resno;
