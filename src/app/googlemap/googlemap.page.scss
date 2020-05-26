@@ -5,13 +5,15 @@ path.leaflet-interactive.animate {
 }
 
 .leaflet-routing-container {
-    width: 320px;
-    background-color: white;
+   width: 32px;
+   background: red;
    padding-top: 4px; 
-   top: 40px;   /*added by me */
+   top: 4px;   /*added by me */
  
-   transition: margin-right 0.2s ease;
+//    transition: margin-right 0.2s ease;
  }
+
+
  
 @keyframes dash {
     to {
