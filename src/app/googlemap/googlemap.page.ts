@@ -176,7 +176,7 @@ export class GooglemapPage {
           L.latLng(current), 
           L.latLng(near_lat, near_lng) 
       ], lineOptions: {
-        styles: [{className: 'animate'}] // Adding animate class
+        styles: [{className: 'animate'}, {color: 'white', opacity: 0.8, weight: 6}, {color: 'green', opacity: 1, weight: 2}] // Adding animate class
       }, routeWhileDragging: false, show: false 
      }).addTo(map);
 
