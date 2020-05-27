@@ -6,13 +6,15 @@
         </ion-toolbar>
       </ion-header>
       <ion-content>
-        <ion-list *ngFor="let pages of navigate">
-        <ion-menu-toggle auto-hide="true">
-          <ion-item [routerLink]="pages.url" routerDirection="forward">
-              <ion-icon [name]="pages.icon" slot="start"></ion-icon>
-                 {{pages.title}} 
-          </ion-item>
-        </ion-menu-toggle>
+        <ion-list *ngFor="let page of appPages">
+          <ion-menu-toggle auto-hide="true">
+            <ion-item [routerDirection]="forward" (click)="onClick(page.title, page.url)">
+              <ion-icon slot="start" [name]="page.icon"></ion-icon>
+              <ion-label>
+                {{page.title}}
+              </ion-label>
+            </ion-item>
+          </ion-menu-toggle>
         </ion-list>
       </ion-content>
     </ion-menu>

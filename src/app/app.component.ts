@@ -41,8 +41,23 @@ export class AppComponent {
     this.initializeApp();
   }
 
+  public appPages = [
+    // { title: 'Home', url: '/dashboard', icon: 'home' },
+    // { title: 'Medicine', url: '/medicine', icon: 'medkit' },
+    // { title: 'Meals', url: '/meals', icon: 'restaurant' },
+    // { title: 'Vitals', url: '/vitals', icon: 'clipboard' },
+    // // { title: 'Activities', url: '/activities', icon: 'walk' },
+    // // { title: 'Resident', url: '/Resident', icon: 'contacts'},
+    // { title: 'Centers', url: '/center', icon: 'photos' },
+    // { title: 'Caregiver', url: '/Caregiver', icon: 'contact'},
+    // { title: 'Reports', url: '/graph-pie', icon: 'stats' },
+    // { title: 'Profile', url: '/profile', icon: 'person' },
+    // { title: 'Logs', url: '/logs', icon: 'time' },
+    { title: 'Log out', url: '/logout', icon: 'exit' },
+  ];
+
   initializeApp() {
-    this.sideMenu();
+    //this.sideMenu();
     this.loadAppConsts();
     // this.platform.ready().then(() => {
     //   this.statusBar.styleDefault();
@@ -74,26 +89,17 @@ export class AppComponent {
     return await popover.present();
   }
 
-  sideMenu()
-  {
-    this.navigate =
-    [
-      {
-        title : "Home",
-        url   : "/home",
-        icon  : "home"
-      },
-      {
-        title : "Chat",
-        url   : "/chat",
-        icon  : "chatboxes"
-      },
-      {
-        title : "Contacts",
-        url   : "/contacts",
-        icon  : "contacts"
-      },
-    ]
+  onClick(name, url) {
+    if (url === '/logout') {
+      this.authService.logout();
+      this.authService.authenticationState.subscribe(state => {
+        if (state) {
+          this.router.navigate(['googlemap']);
+        } else {
+          this.router.navigate(['login']);
+        }
+      });
+    }
   }
 
   
