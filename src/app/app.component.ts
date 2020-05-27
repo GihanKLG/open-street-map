@@ -1,11 +1,19 @@
 import { Component } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { Router } from '@angular/router';
-import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { HttpClient } from '@angular/common/http';
 import { AuthenticationService } from './services/authentication.service';
+import { LanguagePopoverPage } from './language-popover/language-popover.page';
+import {
+  Platform,
+  ToastController,
+  ActionSheetController,
+  MenuController,
+  PopoverController,
+  ModalController
+} from '@ionic/angular';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +25,7 @@ export class AppComponent {
   licenseInfo: any;
   selectedLan: any = 'en';
   selectedLicense: any = {};
+  navigate : any;
   
 
   constructor(
@@ -26,12 +35,14 @@ export class AppComponent {
     private router: Router,
     private storage: Storage,
     public http: HttpClient,
+    private popoverCtrl: PopoverController,
     private authService: AuthenticationService
   ) {
     this.initializeApp();
   }
 
   initializeApp() {
+    this.sideMenu();
     this.loadAppConsts();
     // this.platform.ready().then(() => {
     //   this.statusBar.styleDefault();
@@ -45,11 +56,44 @@ export class AppComponent {
     });
   }
 
-  loadAppConst() {
-    return new Promise((resolve: any, reject: any) => {
-      // resolve(from(this.http.get('assets/lan/appConstants.json')));
-      this.http.get('assets/lan/appConstants.json').subscribe((data) => resolve(data));
+  async seletLanguage(ev: any) {
+    const popover = await this.popoverCtrl.create({
+      component: LanguagePopoverPage,
+      event: ev,
+      translucent: true
     });
+
+    popover.onDidDismiss().then((lan) => {
+      const tempLan = this.selectedLan;
+      if (lan.data === null || lan.data === undefined || lan.data === '') {
+        this.selectedLan = tempLan;
+      } else {
+        this.selectedLan = lan.data;
+      }
+    });
+    return await popover.present();
+  }
+
+  sideMenu()
+  {
+    this.navigate =
+    [
+      {
+        title : "Home",
+        url   : "/home",
+        icon  : "home"
+      },
+      {
+        title : "Chat",
+        url   : "/chat",
+        icon  : "chatboxes"
+      },
+      {
+        title : "Contacts",
+        url   : "/contacts",
+        icon  : "contacts"
+      },
+    ]
   }
 
   
