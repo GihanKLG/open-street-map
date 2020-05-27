@@ -195,15 +195,15 @@ export class GooglemapPage {
  });
 }
 
- logout() {
-  this.authService.logout();
-  this.authService.authenticationState.subscribe(state => {
-    if (state) {
-      this.router.navigate(['googlemap']);
-    } else {
-      this.router.navigate(['login']);
-    }
-  });
-}
+//  logout() {
+//   this.authService.logout();
+//   this.authService.authenticationState.subscribe(state => {
+//     if (state) {
+//       this.router.navigate(['googlemap']);
+//     } else {
+//       this.router.navigate(['login']);
+//     }
+//   });
+// }
 
 }
