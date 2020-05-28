@@ -2,6 +2,7 @@ import { AuthenticationService } from './../services/authentication.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Storage } from '@ionic/storage';
+import { AppComponent } from 'src/app/app.component';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 
 
@@ -16,7 +17,7 @@ export class LoginPage implements OnInit {
   password: any = '';
   loginDisable = true;
  
-  constructor(private authService: AuthenticationService, public router: Router, private storage: Storage, private http: HttpClient) { }
+  constructor(private authService: AuthenticationService, public router: Router, private storage: Storage, private http: HttpClient, public appComponent: AppComponent) { }
  
   ngOnInit() {
   }
@@ -45,7 +46,9 @@ export class LoginPage implements OnInit {
       // this.audit.debug(res);
       this.storage.set('accessId', session_id).then( (savedId) => {
         this.authService.accessId = savedId;
+        this.authService.authenticationState.next(true);
         console.log(this.authService.accessId);
+        console.log(this.appComponent.status);
         this.router.navigate(['googlemap']);
       //   this.appData.accessId = savedId;
       //   console.log( this.appData.accessId)

@@ -6,6 +6,7 @@ import * as L from 'leaflet';
 import 'leaflet-routing-machine';
 import 'leaflet.markercluster';
 import { AuthenticationService } from './../services/authentication.service';
+import { AppComponent } from 'src/app/app.component';
 
 declare var MarkerClusterer: any;
 @Component({
@@ -19,7 +20,7 @@ export class GooglemapPage {
 
   constructor(public http: HttpClient,
     public plt: Platform,
-    public router: Router, private authService: AuthenticationService) {}
+    public router: Router, private authService: AuthenticationService, public appComponent: AppComponent) {}
 
   ionViewDidEnter() { this.leafletMap(); }
 
@@ -186,7 +187,13 @@ export class GooglemapPage {
     var summary = routes[0].summary;
 
     var dist = Math.round(summary.totalDistance / 1000);
-    if(dist > loc_radius) alert('You are not in sand mining place and total distance is ' + Math.round(summary.totalDistance / 1000) + ' km and total time is ' + Math.round(summary.totalTime % 3600 / 60) + ' minutes');
+    if(dist > loc_radius){
+        // this.appComponent.dist = dist;
+        // this.appComponent.loc_radius = loc_radius;
+       // this.router.navigate(['/dashboard']);
+       //this.navigate();
+       alert('You are not in sand mining place and total distance is ' + Math.round(summary.totalDistance / 1000) + ' km and total time is ' + Math.round(summary.totalTime % 3600 / 60) + ' minutes');
+      }
     else alert('You are in sand minning place');
    });
 
@@ -195,15 +202,9 @@ export class GooglemapPage {
  });
 }
 
-//  logout() {
-//   this.authService.logout();
-//   this.authService.authenticationState.subscribe(state => {
-//     if (state) {
-//       this.router.navigate(['googlemap']);
-//     } else {
-//       this.router.navigate(['login']);
-//     }
-//   });
-// }
+ navigate() {
+  this.router.navigate(['/dashboard']);
+ }
+
 
 }

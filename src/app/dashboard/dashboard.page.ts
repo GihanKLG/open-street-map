@@ -12,6 +12,7 @@ import { AuthenticationService } from './../services/authentication.service';
 })
 export class DashboardPage implements OnInit {
   selectedLicenseNo: any;
+  // checkauth = true;
 
   constructor(
     private router: Router,
@@ -19,7 +20,9 @@ export class DashboardPage implements OnInit {
     private storage: Storage,
     public http: HttpClient,
     private authService: AuthenticationService
-  ) { }
+  ) { 
+    console.log(this.authService.accessId);
+  }
 
   ngOnInit() {
   }

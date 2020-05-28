@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { BehaviorSubject } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { resolve } from 'url';
 
 const STORAGE_KEY = 'auth-token';
 
@@ -14,7 +15,10 @@ export class AuthenticationService {
  
   authenticationState = new BehaviorSubject(false);
   accessId: any = null;
- 
+  accessState: any = false;
+  state: any;
+  
+
  
   constructor(private storage: Storage, private plt: Platform, private http: HttpClient) { 
     // this.plt.ready().then(() => {
@@ -70,6 +74,7 @@ export class AuthenticationService {
     return new Promise((resolve: any, reject: any) => {
     this.storage.set('accessId', null).then((savedId) => {
       this.accessId = null;
+      this.authenticationState.next(false);
       const url = 'http://localhost/googlemap/svr/' + 'access.php?action=logout&session_id=' + this.accessId;
       this.http.get(url).subscribe(err => { 
         console.log(err);
@@ -81,7 +86,7 @@ export class AuthenticationService {
 
  
   isAuthenticated() {
-    return this.authenticationState.value;
+   return true;
   }
  
   getAccessId() {
@@ -105,6 +110,7 @@ export class AuthenticationService {
   setAccessId(id) {
      this.accessId = id;
     this.storage.set('accessId', id);
+    this.storage.set('accessState',true);
   }
   
   loadAppConsts() {
