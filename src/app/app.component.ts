@@ -26,6 +26,9 @@ export class AppComponent {
   selectedLan: any = 'en';
   selectedLicense: any = {};
   navigate : any;
+  status: any;
+  dist: any;
+  loc_radius: any;
   
 
   constructor(
