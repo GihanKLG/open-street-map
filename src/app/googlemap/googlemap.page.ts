@@ -17,12 +17,15 @@ declare var MarkerClusterer: any;
 export class GooglemapPage {
   @ViewChild('map', { static: false }) mapElement: ElementRef;
   map: any;
+  sum: any;
 
   constructor(public http: HttpClient,
     public plt: Platform,
     public router: Router, private authService: AuthenticationService, public appComponent: AppComponent) {}
 
-  ionViewDidEnter() { this.leafletMap(); }
+  ionViewDidEnter() { 
+    this.leafletMap();
+  }
 
   leafletMap() {
     var d = new Date();
@@ -75,9 +78,10 @@ export class GooglemapPage {
       console.log('time to get backend respond (action:read)-'+h+':'+m+':'+s+':'+n);
 
        var location = res.details.Location;
-       var near_lat = res.details.nearest_place.lat
-       var near_lng = res.details.nearest_place.lng
-       var loc_radius = res.details.nearest_place.radius
+       var near_lat = res.details.nearest_place.lat;
+       var near_lng = res.details.nearest_place.lng;
+       var loc_radius = res.details.nearest_place.radius;
+       var loc_distance = res.details.nearest_place.distance;
        var cluster = L.markerClusterGroup();
        var lat,lng,i,div;
 
@@ -181,30 +185,26 @@ export class GooglemapPage {
       }, routeWhileDragging: false, show: false 
      }).addTo(map);
 
-
-     routeControl.on('routesfound', function(e) {
-    var routes = e.routes;
-    var summary = routes[0].summary;
-
-    var dist = Math.round(summary.totalDistance / 1000);
-    if(dist > loc_radius){
-        // this.appComponent.dist = dist;
-        // this.appComponent.loc_radius = loc_radius;
-       // this.router.navigate(['/dashboard']);
-       //this.navigate();
-       alert('You are not in sand mining place and total distance is ' + Math.round(summary.totalDistance / 1000) + ' km and total time is ' + Math.round(summary.totalTime % 3600 / 60) + ' minutes');
-      }
-    else alert('You are in sand minning place');
-   });
-
+     this.direcDashboard(loc_distance, loc_radius, routeControl);
    }); 
   });
  });
 }
 
- navigate() {
-  this.router.navigate(['/dashboard']);
- }
-
+direcDashboard(loc_distance, loc_radius, routeControl) {
+  console.log("dashboard");
+  if(loc_distance <= loc_radius) {
+    //alert("you are in leagal mining place");
+    this.router.navigate(['/dashboard']);
+  }
+  else {
+     var rcontrol = routeControl.on('routesfound', function(e) {
+     var routes = e.routes;
+     var summary = routes[0].summary;
+     var dist = Math.round(summary.totalDistance / 1000);
+     alert('You are not in sand mining place and total distance is ' + Math.round(summary.totalDistance / 1000) + ' km and total time is ' + Math.round(summary.totalTime % 3600 / 60) + ' minutes');
+   });
+  }
+}
 
 }
