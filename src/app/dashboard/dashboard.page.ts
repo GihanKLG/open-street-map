@@ -20,9 +20,7 @@ export class DashboardPage implements OnInit {
     private storage: Storage,
     public http: HttpClient,
     private authService: AuthenticationService
-  ) { 
-    console.log(this.authService.accessId);
-  }
+  ) {}
 
   ngOnInit() {
   }
@@ -54,6 +52,7 @@ export class DashboardPage implements OnInit {
     console.log('123456789');
     this.authService.getAccessId().then(id => {
       let sessionId = id;
+      console.log(this.appComponent.dashboard_status);
       var url = 'http://localhost/gsmb/svr/dashboard.php?action=read'+'&session_id='+ sessionId;
       console.log(url);
       this.http.get(url).subscribe((res: any) => {

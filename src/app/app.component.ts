@@ -29,6 +29,7 @@ export class AppComponent {
   status: any;
   dist: any;
   loc_radius: any;
+  dashboard_status: any = false;
   
 
   constructor(
