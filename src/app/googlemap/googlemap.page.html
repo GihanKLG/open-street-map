@@ -16,6 +16,17 @@
   <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
 
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link href="https://unpkg.com/leaflet-easybutton@2.0.0/src/easy-button.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Fira+Sans+Condensed:300,400,400i,700" rel="stylesheet">
+
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://unpkg.com/leaflet-easybutton@2.0.0/src/easy-button.js">
+</script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 </head> 
 <body> 
 <ion-header>
@@ -33,6 +44,12 @@
 </ion-header>
 <div id="distancetravelled"></div>
 <ion-content>
-  <div id="map" style="width: 100%; height: 100%"></div>
+  <div id="map" style="width: 100%; height: 100%">
+    <div class="btn-group" style="z-index: 1001"> <!-- Use 401 to be between map and controls -->
+      <button type="buttons" id="allbus" class="btn btn-success">All</button>
+      <button type="buttons" id="others" class="btn btn-primary">Others</button>
+      <button type="buttons" id="cafes" class="btn btn-danger">Cafes</button>
+      </div>
+  </div>
 </ion-content>
 </body>

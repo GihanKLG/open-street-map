@@ -2,11 +2,13 @@ import { Component, ViewChild, ElementRef } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { Storage } from '@ionic/storage';
 import * as L from 'leaflet';
 import 'leaflet-routing-machine';
 import 'leaflet.markercluster';
 import { AuthenticationService } from './../services/authentication.service';
 import { AppComponent } from 'src/app/app.component';
+// import { AuditService } from './../services/audit.service';
 
 declare var MarkerClusterer: any;
 @Component({
@@ -17,10 +19,10 @@ declare var MarkerClusterer: any;
 export class GooglemapPage {
   @ViewChild('map', { static: false }) mapElement: ElementRef;
   map: any;
-  sum: any;
+ 
 
   constructor(public http: HttpClient,
-    public plt: Platform,
+    public plt: Platform, private storage: Storage,
     public router: Router, private authService: AuthenticationService, public appComponent: AppComponent) {}
 
   ionViewDidEnter() { 
@@ -34,6 +36,7 @@ export class GooglemapPage {
     var s = d.getSeconds();
     var n = d.getMilliseconds();
     console.log('start time load leflet map -'+h+':'+m+':'+s+':'+n);
+    //this.audit.info();
 
     var map = L.map("map").fitWorld();
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -185,7 +188,7 @@ export class GooglemapPage {
       }, routeWhileDragging: false, show: false 
      }).addTo(map);
 
-     this.direcDashboard(loc_distance, loc_radius, routeControl);
+     //this.direcDashboard(loc_distance, loc_radius, routeControl);
    }); 
   });
  });
@@ -193,8 +196,12 @@ export class GooglemapPage {
 
 direcDashboard(loc_distance, loc_radius, routeControl) {
   console.log("dashboard");
-  if(loc_distance <= loc_radius) {
+  if(loc_distance >= loc_radius) {
     //alert("you are in leagal mining place");
+    this.storage.set('dashboard_status', true).then( (dashboard_status) => {
+    this.appComponent.dashboard_status = true;
+    });
+    console.log(this.appComponent.status);
     this.router.navigate(['/dashboard']);
   }
   else {
