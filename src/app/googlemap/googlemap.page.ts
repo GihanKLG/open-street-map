@@ -179,14 +179,26 @@ export class GooglemapPage {
       console.log('time for end to run for loop -'+h+':'+m+':'+s+':'+n);
     });
 
-    var routeControl = L.Routing.control({ 
-      waypoints: [ 
-          L.latLng(current), 
-          L.latLng(near_lat, near_lng) 
-      ], lineOptions: {
-        styles: [{className: 'animate'}, {color: 'white', opacity: 0.8, weight: 6}, {color: 'green', opacity: 1, weight: 2}] // Adding animate class
-      }, routeWhileDragging: false, show: false 
-     }).addTo(map);
+    // var routeControl
+
+    // if (routeControl != null){
+    //   routeControl.removeFrom(map);}
+
+    // routeControl = L.Routing.control({ 
+    //   waypoints: [ 
+    //       L.latLng(current), 
+    //       L.latLng(near_lat, near_lng) 
+    //   ], lineOptions: {
+    //     styles: [{className: 'animate'}, {color: 'white', opacity: 0.8, weight: 6}, {color: 'green', opacity: 1, weight: 2}] // Adding animate class
+    //   }, routeWhileDragging: false, show: false 
+    //  }).addTo(map);
+
+    var routing1 =  L.Routing.control({
+      waypoints: [
+          L.latLng(current),
+          L.latLng(near_lat, near_lng),
+      ],
+  }).addTo(map);
 
      //this.direcDashboard(loc_distance, loc_radius, routeControl);
    }); 
