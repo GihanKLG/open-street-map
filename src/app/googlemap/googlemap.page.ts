@@ -19,6 +19,8 @@ declare var MarkerClusterer: any;
 export class GooglemapPage {
   @ViewChild('map', { static: false }) mapElement: ElementRef;
   map: any;
+  loc_radius: any;
+  loc_distance: any;
  
 
   constructor(public http: HttpClient,
@@ -83,8 +85,8 @@ export class GooglemapPage {
        var location = res.details.Location;
        var near_lat = res.details.nearest_place.lat;
        var near_lng = res.details.nearest_place.lng;
-       var loc_radius = res.details.nearest_place.radius;
-       var loc_distance = res.details.nearest_place.distance;
+       this.loc_radius = res.details.nearest_place.radius;
+       this.loc_distance = res.details.nearest_place.distance;
        var cluster = L.markerClusterGroup();
        var lat,lng,i,div;
 
@@ -178,37 +180,14 @@ export class GooglemapPage {
       n = d.getMilliseconds();
       console.log('time for end to run for loop -'+h+':'+m+':'+s+':'+n);
     });
-
-    // var routeControl
-
-    // if (routeControl != null){
-    //   routeControl.removeFrom(map);}
-
-    // routeControl = L.Routing.control({ 
-    //   waypoints: [ 
-    //       L.latLng(current), 
-    //       L.latLng(near_lat, near_lng) 
-    //   ], lineOptions: {
-    //     styles: [{className: 'animate'}, {color: 'white', opacity: 0.8, weight: 6}, {color: 'green', opacity: 1, weight: 2}] // Adding animate class
-    //   }, routeWhileDragging: false, show: false 
-    //  }).addTo(map);
-
-    var routing1 =  L.Routing.control({
-      waypoints: [
-          L.latLng(current),
-          L.latLng(near_lat, near_lng),
-      ],
-  }).addTo(map);
-
-     //this.direcDashboard(loc_distance, loc_radius, routeControl);
    }); 
   });
  });
 }
 
-direcDashboard(loc_distance, loc_radius, routeControl) {
-  console.log("dashboard");
-  if(loc_distance >= loc_radius) {
+Dashboard() {
+  console.log(this.loc_distance + ' ' + this.loc_radius);
+  if(this.loc_distance >= this.loc_radius) {
     //alert("you are in leagal mining place");
     this.storage.set('dashboard_status', true).then( (dashboard_status) => {
     this.appComponent.dashboard_status = true;
@@ -217,12 +196,7 @@ direcDashboard(loc_distance, loc_radius, routeControl) {
     this.router.navigate(['/dashboard']);
   }
   else {
-     var rcontrol = routeControl.on('routesfound', function(e) {
-     var routes = e.routes;
-     var summary = routes[0].summary;
-     var dist = Math.round(summary.totalDistance / 1000);
-     alert('You are not in sand mining place and total distance is ' + Math.round(summary.totalDistance / 1000) + ' km and total time is ' + Math.round(summary.totalTime % 3600 / 60) + ' minutes');
-   });
+     alert('You are not in sand mining place and total distance is ' + this.loc_distance + ' km');
   }
 }
 
