@@ -36,20 +36,20 @@ export class GooglemapPage {
     var s = d.getSeconds();
     var n = d.getMilliseconds();
     console.log('start time load leflet map -'+h+':'+m+':'+s+':'+n);
-    //this.audit.info();
-
+  
     var map = L.map("map").fitWorld();
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
     
     //get time
-    d = new Date();
-    h =  d.getHours();
-    m = d.getMinutes();
-    s = d.getSeconds();
-    n = d.getMilliseconds();
-    console.log('end time load leaflet map -'+h+':'+m+':'+s+':'+n);
+    // d = new Date();
+    // h =  d.getHours();
+    // m = d.getMinutes();
+    // s = d.getSeconds();
+    // n = d.getMilliseconds();
+    // console.log('end time load leaflet map -'+h+':'+m+':'+s+':'+n);
+    this.authService.getTime("end time load leaflet map");
 
     map.locate({
       setView: true,
@@ -83,6 +83,7 @@ export class GooglemapPage {
        var location = res.details.Location;
        var near_lat = res.details.nearest_place.lat;
        var near_lng = res.details.nearest_place.lng;
+       var near_division = res.details.nearest_place.division;
        this.loc_radius = res.details.nearest_place.radius;
        this.loc_distance = res.details.nearest_place.distance;
        var cluster = L.markerClusterGroup();
@@ -104,6 +105,9 @@ export class GooglemapPage {
        }
 
       map.addLayer(cluster);
+
+      let nearestPlace = L.marker([near_lat, near_lng], { title: "My marker" }).bindPopup('<p>nearest sand minning place in ' + near_division + '</p>');
+      map.addLayer(nearestPlace);
 
       //get time
       d = new Date();
@@ -185,7 +189,7 @@ export class GooglemapPage {
 
 Dashboard() {
   console.log(this.loc_distance + ' ' + this.loc_radius);
-  if(this.loc_distance >= this.loc_radius) {
+  if(this.loc_distance <= this.loc_radius) {
     //alert("you are in leagal mining place");
     this.storage.set('dashboard_status', true).then( (dashboard_status) => {
     this.appComponent.dashboard_status = true;
@@ -199,3 +203,4 @@ Dashboard() {
 }
 
 }
+
