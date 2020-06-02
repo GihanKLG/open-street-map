@@ -8,7 +8,6 @@ import 'leaflet-routing-machine';
 import 'leaflet.markercluster';
 import { AuthenticationService } from './../services/authentication.service';
 import { AppComponent } from 'src/app/app.component';
-// import { AuditService } from './../services/audit.service';
 
 declare var MarkerClusterer: any;
 @Component({
@@ -23,9 +22,8 @@ export class GooglemapPage {
   loc_distance: any;
  
 
-  constructor(public http: HttpClient,
-    public plt: Platform, private storage: Storage,
-    public router: Router, private authService: AuthenticationService, public appComponent: AppComponent) {}
+  constructor(public http: HttpClient, public plt: Platform, private storage: Storage,public router: Router, 
+    private authService: AuthenticationService, public appComponent: AppComponent) {}
 
   ionViewDidEnter() { 
     this.leafletMap();
