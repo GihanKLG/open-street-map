@@ -30,26 +30,14 @@ export class GooglemapPage {
   }
 
   leafletMap() {
-    var d = new Date();
-    var h =  d.getHours();
-    var m = d.getMinutes();
-    var s = d.getSeconds();
-    var n = d.getMilliseconds();
-    console.log('start time load leflet map -'+h+':'+m+':'+s+':'+n);
+    this.authService.getTime("start time load leflet map -"); //get time
   
     var map = L.map("map").fitWorld();
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
-    
-    //get time
-    // d = new Date();
-    // h =  d.getHours();
-    // m = d.getMinutes();
-    // s = d.getSeconds();
-    // n = d.getMilliseconds();
-    // console.log('end time load leaflet map -'+h+':'+m+':'+s+':'+n);
-    this.authService.getTime("end time load leaflet map");
+
+    this.authService.getTime("end time load leaflet map"); //get time
 
     map.locate({
       setView: true,
@@ -59,26 +47,14 @@ export class GooglemapPage {
       map.addLayer(marker);
       var current = res.latlng;
     
-    //get time
-    d = new Date();
-    h =  d.getHours();
-    m = d.getMinutes();
-    s = d.getSeconds();
-    n = d.getMilliseconds();
-    console.log('time for get current location -'+h+':'+m+':'+s+':'+n);
+    this.authService.getTime("time for get current location");//get time
 
     this.authService.getAccessId().then(id => {
     var url = 'http://localhost/googlemap/svr/report.php?action=read&location='+current+'&session_id='+id;
 
     this.http.get(url).subscribe((res: any) => {
      
-      //get time
-      d = new Date();
-      h =  d.getHours();
-      m = d.getMinutes();
-      s = d.getSeconds();
-      n = d.getMilliseconds();
-      console.log('time to get backend respond (action:read)-'+h+':'+m+':'+s+':'+n);
+      this.authService.getTime("time to get backend respond (action:read)-");  //get time
 
        var location = res.details.Location;
        var near_lat = res.details.nearest_place.lat;
@@ -89,13 +65,7 @@ export class GooglemapPage {
        var cluster = L.markerClusterGroup();
        var lat,lng,i,div;
 
-      //get time
-      d = new Date();
-      h =  d.getHours();
-      m = d.getMinutes();
-      s = d.getSeconds();
-      n = d.getMilliseconds();
-      console.log('time for start to run for loop -'+h+':'+m+':'+s+':'+n);
+      this.authService.getTime("time for start to run for loop -"); //get time
 
        for(i=0;i<location.length;i++) {
         lat = location[i].lat;
@@ -109,38 +79,20 @@ export class GooglemapPage {
       let nearestPlace = L.marker([near_lat, near_lng], { title: "My marker" }).bindPopup('<p>nearest sand minning place in ' + near_division + '</p>');
       map.addLayer(nearestPlace);
 
-      //get time
-      d = new Date();
-      h =  d.getHours();
-      m = d.getMinutes();
-      s = d.getSeconds();
-      n = d.getMilliseconds();
-      console.log('time for end to run for loop -'+h+':'+m+':'+s+':'+n);
+      this.authService.getTime("time for end to run for loop -"); //get time
 
     url = 'http://localhost/googlemap/svr/report.php?action=division_read&session_id='+id;
     console.log(url);
     
     this.http.get(url).subscribe((res: any) => {
-
-      //get time
-      d = new Date();
-      h =  d.getHours();
-      m = d.getMinutes();
-      s = d.getSeconds();
-      n = d.getMilliseconds();
-      console.log('time to get backend respond (action:division_read)-'+h+':'+m+':'+s+':'+n);
+     
+      this.authService.getTime("time to get backend respond (action:division_read)-"); //get time
 
       var location = res.details.Location;  
       var circles = [], i;
       var result = res.details.Location;
 
-      //get time
-      d = new Date();
-      h =  d.getHours();
-      m = d.getMinutes();
-      s = d.getSeconds();
-      n = d.getMilliseconds();
-      console.log('time for start to run for loop -'+h+':'+m+':'+s+':'+n);
+      this.authService.getTime("time for start to run for loop -"); //get time
 
       for (i = 0; i < result.length; i++) {
         const lt = result[i].lat;
@@ -174,13 +126,8 @@ export class GooglemapPage {
           circles.push(circle);
         }
       } 
-      //get time
-      d = new Date();
-      h =  d.getHours();
-      m = d.getMinutes();
-      s = d.getSeconds();
-      n = d.getMilliseconds();
-      console.log('time for end to run for loop -'+h+':'+m+':'+s+':'+n);
+      
+      this.authService.getTime("time for end to run for loop -") //get time
     });
    }); 
   });
