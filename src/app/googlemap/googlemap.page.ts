@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { Platform } from '@ionic/angular';
+import { Platform, NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Storage } from '@ionic/storage';
@@ -23,7 +23,7 @@ export class GooglemapPage {
  
 
   constructor(public http: HttpClient, public plt: Platform, private storage: Storage,public router: Router, 
-    private authService: AuthenticationService, public appComponent: AppComponent) {}
+    private authService: AuthenticationService, public appComponent: AppComponent, public navCtrl: NavController) {}
 
   ionViewDidEnter() { 
     this.leafletMap();
@@ -33,6 +33,8 @@ export class GooglemapPage {
     this.authService.getTime("start time load leflet map -"); //get time
   
     var map = L.map("map").fitWorld();
+    this.map = map;
+
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
@@ -136,13 +138,16 @@ export class GooglemapPage {
 
 Dashboard() {
   console.log(this.loc_distance + ' ' + this.loc_radius);
-  if(this.loc_distance <= this.loc_radius) {
+  if(this.loc_distance >= this.loc_radius) {
     //alert("you are in leagal mining place");
     this.storage.set('dashboard_status', true).then( (dashboard_status) => {
     this.appComponent.dashboard_status = true;
     });
     console.log(this.appComponent.status);
-    this.router.navigate(['/dashboard']);
+    var loc_details = [];
+    loc_details[0] = this.loc_distance;
+    loc_details[1] = this.loc_radius
+    this.router.navigate(['/dashboard', JSON.stringify(loc_details)]);
   }
   else {
      alert('You are not in sand mining place and total distance is ' + this.loc_distance + ' km');
