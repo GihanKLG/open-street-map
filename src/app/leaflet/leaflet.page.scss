@@ -1,0 +1,36 @@
+path.leaflet-interactive.animate {
+    stroke-dasharray: 1920;
+    stroke-dashoffset: 1920;
+    animation: dash 10s linear 1s forwards;
+}
+
+.leaflet-routing-container {
+   width: 32px;
+   background: red;
+   padding-top: 4px; 
+   top: 4px;   /*added by me */
+ 
+//    transition: margin-right 0.2s ease;
+ }
+
+
+ 
+@keyframes dash {
+    to {
+        stroke-dashoffset: 0;
+    }
+}    
+
+.btn-group {
+    justify-content: flex-end;
+    display: flex;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+  }
+
+  .btton-logo {
+  height : 100%;
+  max-height: 40px;
+  max-width: 40px;
+ }
