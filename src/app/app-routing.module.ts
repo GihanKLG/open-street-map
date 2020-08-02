@@ -23,6 +23,10 @@ const routes: Routes = [
     path: 'dashboard/:loc_details',
     loadChildren: () => import('./dashboard/dashboard.module').then( m => m.DashboardPageModule)
   },
+  {
+    path: 'leaflet',
+    loadChildren: () => import('./leaflet/leaflet.module').then( m => m.LeafletPageModule)
+  },
 
 ];
 
