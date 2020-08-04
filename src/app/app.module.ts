@@ -14,7 +14,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { IonicStorageModule } from '@ionic/storage';
 
 import { Geolocation } from '@ionic-native/geolocation/ngx';
-// import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
+
+import {NgxEchartsModule} from 'ngx-echarts';
+import * as echarts from './custom-echart';
+
 
 @NgModule({
   declarations: [AppComponent],
@@ -24,7 +27,8 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
     IonicModule.forRoot(), 
     AppRoutingModule,
     HttpClientModule,
-    IonicStorageModule.forRoot()
+    IonicStorageModule.forRoot(),
+    NgxEchartsModule.forRoot({echarts})
   ],
   providers: [
     StatusBar,

@@ -24,8 +24,9 @@ const routes: Routes = [
     loadChildren: () => import('./dashboard/dashboard.module').then( m => m.DashboardPageModule)
   },
   {
-    path: 'leaflet',
-    loadChildren: () => import('./leaflet/leaflet.module').then( m => m.LeafletPageModule)
+    path: 'geoleaflet',
+    loadChildren: () => import('./geoleaflet/geoleaflet.module').then( m => m.GeoleafletPageModule)
+
   },
 
 ];
