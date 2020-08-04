@@ -26,6 +26,7 @@ const routes: Routes = [
   {
     path: 'geoleaflet',
     loadChildren: () => import('./geoleaflet/geoleaflet.module').then( m => m.GeoleafletPageModule)
+
   },
 
 ];

@@ -21,7 +21,6 @@ export class GooglemapPage {
   loc_radius: any;
   loc_distance: any;
  
-
   constructor(public http: HttpClient, public plt: Platform, private storage: Storage,public router: Router, 
     private authService: AuthenticationService, public appComponent: AppComponent, public navCtrl: NavController) {}
 
@@ -30,16 +29,13 @@ export class GooglemapPage {
   }
 
   leafletMap() {
-    this.authService.getTime("start time load leflet map -"); //get time
-  
+      
     var map = L.map("map").fitWorld();
     this.map = map;
 
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
-
-    this.authService.getTime("end time load leaflet map"); //get time
 
     map.locate({
       setView: true,
@@ -48,11 +44,10 @@ export class GooglemapPage {
       let marker = L.marker(res.latlng, { title: "My marker" });
       map.addLayer(marker);
       var current = res.latlng;
-    
-    this.authService.getTime("time for get current location");//get time
 
     this.authService.getAccessId().then(id => {
     var url = 'http://localhost/googlemap/svr/report.php?action=read&location='+current+'&session_id='+id;
+    console.log(url);
 
     this.http.get(url).subscribe((res: any) => {
      
@@ -67,9 +62,7 @@ export class GooglemapPage {
        var cluster = L.markerClusterGroup();
        var lat,lng,i,div;
 
-      this.authService.getTime("time for start to run for loop -"); //get time
-
-       for(i=0;i<location.length;i++) {
+      for(i=0;i<location.length;i++) {
         lat = location[i].lat;
         lng = location[i].lng;
         div = location[i].Division;
@@ -81,20 +74,14 @@ export class GooglemapPage {
       let nearestPlace = L.marker([near_lat, near_lng], { title: "My marker" }).bindPopup('<p>nearest sand minning place in ' + near_division + '</p>');
       map.addLayer(nearestPlace);
 
-      this.authService.getTime("time for end to run for loop -"); //get time
-
     url = 'http://localhost/googlemap/svr/report.php?action=division_read&session_id='+id;
     console.log(url);
     
     this.http.get(url).subscribe((res: any) => {
-     
-      this.authService.getTime("time to get backend respond (action:division_read)-"); //get time
 
       var location = res.details.Location;  
       var circles = [], i;
       var result = res.details.Location;
-
-      this.authService.getTime("time for start to run for loop -"); //get time
 
       for (i = 0; i < result.length; i++) {
         const lt = result[i].lat;
@@ -128,8 +115,6 @@ export class GooglemapPage {
           circles.push(circle);
         }
       } 
-      
-      this.authService.getTime("time for end to run for loop -") //get time
     });
    }); 
   });
