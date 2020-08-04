@@ -25,28 +25,19 @@ export class GeoleafletPage {
   }
 
   leafletMap() {
-     
-    var map = L.map("map").fitWorld();
+  
+    var map = L.map("map").setView([7.7139335,80.3835681], 7.4);
     this.map = map;
 
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-     map.locate({
-      setView: true,
-      maxZoom: 10
-    }).on('locationfound', (res) => {
-      let marker = L.marker(res.latlng, { title: "My marker" });
-      map.addLayer(marker);
-    }); 
-
-    this.http.get('assets/sand_mining_place_count.geojson').subscribe((json: any) => {
+   this.http.get('assets/sand_mining_place_count.geojson').subscribe((json: any) => {
       console.log(json);
       L.geoJSON(json, {style: style}).addTo(map);
      });
   }
-
 }
 
 function style(feature) {
