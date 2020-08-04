@@ -23,6 +23,10 @@ const routes: Routes = [
     path: 'dashboard/:loc_details',
     loadChildren: () => import('./dashboard/dashboard.module').then( m => m.DashboardPageModule)
   },
+  {
+    path: 'geoleaflet',
+    loadChildren: () => import('./geoleaflet/geoleaflet.module').then( m => m.GeoleafletPageModule)
+  },
 
 ];
 
