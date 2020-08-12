@@ -37,6 +37,11 @@ export class GeoleafletPage {
       console.log(json);
       L.geoJSON(json, {style: style}).addTo(map);
      });
+
+     const imageBounds = L.latLngBounds([[6.9710823,78.7166621], [5.8855376,77.6747767]]);
+     const imgOverlay = L.imageOverlay('assets/images/Capture.PNG', imageBounds);
+
+    imgOverlay.addTo(map);
   }
 }
 
@@ -62,3 +67,6 @@ function getColor(d) {
          d > 71   ? '#FED976' :
                     '#FFEDA0';
 }
+
+//6.9710823,79.7166621
+//6.8855376,79.6747767
