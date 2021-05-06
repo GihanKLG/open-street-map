@@ -33,7 +33,7 @@
     "cordova-plugin-geolocation": "^4.0.2",
     "core-js": "^2.5.4",
     "echarts": "^4.8.0",
-    "highcharts": "^8.1.2",
+    "highcharts": "^9.0.0",
     "leaflet": "^1.6.0",
     "leaflet-routing-machine": "^3.2.12",
     "leaflet.markercluster": "^1.4.1",
