@@ -37,7 +37,7 @@
     "leaflet": "^1.6.0",
     "leaflet-routing-machine": "^3.2.12",
     "leaflet.markercluster": "^1.4.1",
-    "moment": "^2.26.0",
+    "moment": "^2.29.4",
     "ngx-echarts": "^5.1.0",
     "rxjs": "~6.5.1",
     "tslib": "^1.9.0",
